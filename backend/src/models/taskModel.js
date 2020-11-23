@@ -18,7 +18,7 @@ const taskSchema = new mongoose.Schema(
       min: 10,
       max: 800,
     },
-    assigned: [
+    assignedTo: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

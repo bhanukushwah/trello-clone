@@ -15,12 +15,12 @@ router.post("/", createBoard);
 router.get("/", getAllBoards);
 
 // get single board
-router.get("/:id", getBoard);
+router.get("/:boardId", getBoard);
 
 // update existing board
-router.patch(":id", updateBoard);
+router.patch("/:boardId", updateBoard);
 
 // delete existing board
-router.patch("/:id", deleteBoard);
+router.delete("/:boardId", deleteBoard);
 
 module.exports = router;

@@ -7,8 +7,7 @@ const taskValidation = require("../../services/validations/TaskValidation");
 const TaskService = require("../../services/TaskServices");
 
 const createTask = async (req, res, next) => {
-  const { task } = req.body;
-  const { boardId, columnId } = req.params;
+  const { task, boardId, columnId } = req.body;
 
   // let validate the data before insert
   const { error } = taskValidation(task);
@@ -57,7 +56,7 @@ const deleteTask = async (req, res, next) => {
   const { boardId, columnId, taskId } = req.params;
 
   // delete task
-  const { code, message, taskDeleted } = await TaskService.deleteTask({
+  const { code, message, data } = await TaskService.deleteTask({
     boardId,
     columnId,
     taskId,
@@ -68,9 +67,41 @@ const deleteTask = async (req, res, next) => {
   badRequestError(res, message);
 };
 
+const assignTask = async (req, res, next) => {
+  const { boardId } = req.params;
+  const { members, columnId, taskId } = req.body;
+
+  const { code, data, message } = await TaskService.assignTask({
+    boardId,
+    columnId,
+    taskId,
+    members,
+  });
+
+  if (code == 200) return okResponse(res, data, "members successfully added");
+  badRequestError(res, message);
+};
+
+const removeAssignMember = async (req, res, next) => {
+  const { boardId } = req.params;
+  const { members, columnId, taskId } = req.body;
+
+  const { code, data, message } = await TaskService.assignTask({
+    boardId,
+    columnId,
+    taskId,
+    members,
+  });
+
+  if (code == 200) return okResponse(res, data, "members successfully added");
+  badRequestError(res, message);
+};
+
 module.exports = {
   getTask,
   createTask,
   updateTask,
   deleteTask,
+  assignTask,
+  removeAssignMember,
 };

@@ -8,8 +8,9 @@ const createTask = async ({ boardId, columnId, task }) => {
     // get the index in columns array by columnId
     const tasks = await board.columns.id(columnId).tasks;
 
+    console.log(tasks);
     await tasks.push(task);
-    await board.save();
+    const taskCreated = await board.save();
 
     return {
       code: 200,
@@ -65,21 +66,53 @@ const updateTask = async ({ boardId, columnId, taskId, task }) => {
     tasks[taskIndex].author = task.author;
 
     await board.save();
+
+    return {
+      code: 200,
+      data: board,
+    };
   } catch (e) {
     return {
       code: 400,
       message: "Error while updating tasks!",
     };
   }
+};
 
-  return {
-    code: 200,
-    data: "jdf",
-  };
+const assignTask = async ({ boardId, columnId, taskId, members }) => {
+  try {
+    // get the board
+    const board = await boardQuery.getBoardById(boardId);
+
+    // get the index in columns array by columnId
+    const tasks = await board.columns.id(columnId).tasks;
+
+    const taskIndex = tasks.findIndex((e) => e.id == taskId);
+
+    const assignedTo = tasks[taskIndex].assignedTo;
+
+    // loop through the members array and add push member to the board
+    members.map(async (member) => {
+      await assignedTo.push(member);
+    });
+
+    await board.save();
+
+    return {
+      code: 200,
+      data: "jdf",
+    };
+  } catch (e) {
+    return {
+      code: 400,
+      message: "Error while updating tasks!",
+    };
+  }
 };
 
 module.exports = {
   createTask,
   updateTask,
   deleteTask,
+  assignTask,
 };

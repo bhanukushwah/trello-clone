@@ -12,13 +12,11 @@ const {
   createTask,
   updateTask,
   deleteTask,
+  assignTask,
+  removeAssignMember,
 } = require("./board/taskControllers");
 
-const {
-  addMember,
-  removeMember,
-  getAllMembers,
-} = require("./board/memberControllers");
+const { addMember, removeMember } = require("./board/memberControllers");
 
 module.exports = {
   getAllBoards,
@@ -33,9 +31,10 @@ module.exports = {
   signup,
   login,
 
-  getAllMembers,
+  assignTask,
   getTask,
   createTask,
   updateTask,
   deleteTask,
+  removeAssignMember,
 };

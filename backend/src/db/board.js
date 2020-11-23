@@ -14,12 +14,21 @@ const createBoard = async (board) => {
 };
 
 const getBoardById = async (id) => {
-  console.log(id);
   return await Board.findOne({ _id: id });
+};
+
+const deleteBoardById = async (id) => {
+  return await Board.findByIdAndDelete(id);
+};
+
+const updateBoard = async (boardId, title) => {
+  return await Board.updateOne({ _id: boardId }, { $set: { title: title } });
 };
 
 module.exports = {
   getAllBoards,
   createBoard,
   getBoardById,
+  deleteBoardById,
+  updateBoard,
 };

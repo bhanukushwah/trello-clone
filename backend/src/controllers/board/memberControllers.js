@@ -32,14 +32,7 @@ const removeMember = async (req, res, next) => {
   noContentResponse(res, "member removed successfully!");
 };
 
-const getAllMembers = async (req, res, next) => {
-  const members = req.body;
-
-  // add member
-};
-
 module.exports = {
   addMember,
   removeMember,
-  getAllMembers,
 };

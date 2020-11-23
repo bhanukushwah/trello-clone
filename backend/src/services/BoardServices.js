@@ -41,7 +41,7 @@ const CreateBoard = async (board) => {
 
     return {
       code: 200,
-      boardCreated: addedBoard,
+      data: addedBoard,
     };
   } catch (e) {
     return {
@@ -67,7 +67,74 @@ const getAllBoards = async () => {
   };
 };
 
+const getBoard = async (boardId) => {
+  const [error, result] = await to(boardQuery.getBoardById(boardId));
+
+  if (result == null)
+    return {
+      code: 404,
+      message: "Board doesn't exist!",
+    };
+
+  if (error) {
+    return {
+      code: 400,
+      message: "Error while getting board",
+    };
+  }
+
+  return {
+    code: 200,
+    data: result,
+  };
+};
+
+const deleteBoard = async (boardId) => {
+  const [error, result] = await to(boardQuery.deleteBoardById(boardId));
+
+  if (error == null)
+    return {
+      code: 400,
+      message: "Board doesn't exist!",
+    };
+
+  if (error)
+    return {
+      code: 400,
+      message: "Error while deleting board",
+    };
+
+  return {
+    code: 200,
+    data: result,
+  };
+};
+
+const updateBoard = async (boardId, title) => {
+  const [error, result] = await to(boardQuery.updateBoard(boardId, title));
+
+  if (result == null)
+    return {
+      code: 400,
+      message: "Board doesn't exist!",
+    };
+
+  if (error)
+    return {
+      code: 400,
+      message: "Error while deleting board",
+    };
+
+  return {
+    code: 200,
+    data: result,
+  };
+};
+
 module.exports = {
   CreateBoard,
   getAllBoards,
+  getBoard,
+  deleteBoard,
+  updateBoard,
 };
