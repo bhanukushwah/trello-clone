@@ -8,6 +8,7 @@ const TaskService = require("../../services/TaskServices");
 
 const createTask = async (req, res, next) => {
   const { task, boardId, columnId } = req.body;
+  const { id } = req.user;
 
   // let validate the data before insert
   const { error } = taskValidation(task);
@@ -18,6 +19,7 @@ const createTask = async (req, res, next) => {
     boardId,
     columnId,
     task,
+    userId: id,
   });
 
   if (code == 200)

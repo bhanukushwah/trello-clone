@@ -1,4 +1,6 @@
 const boardQuery = require("../db/board");
+const user = require("../db/user");
+const userQuery = require("../db/user");
 
 const addMembers = async ({ boardId, members }) => {
   try {
@@ -22,6 +24,21 @@ const addMembers = async ({ boardId, members }) => {
     code: 200,
     data: members,
   };
+};
+
+const searchMembers = async (email) => {
+  try {
+    const data = await userQuery.getUsersByEmail(email);
+    return {
+      code: 200,
+      data: data,
+    };
+  } catch (e) {
+    return {
+      code: 400,
+      message: "Error while removing member!",
+    };
+  }
 };
 
 const removeMember = async ({ boardId, memberId }) => {
@@ -58,4 +75,5 @@ const removeMember = async ({ boardId, memberId }) => {
 module.exports = {
   addMembers,
   removeMember,
+  searchMembers,
 };

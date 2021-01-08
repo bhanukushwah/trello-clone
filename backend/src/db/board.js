@@ -1,12 +1,17 @@
 const Board = require("../models/boardModel");
+const User = require("../models/userModel");
 
 // get all boards created by user
 const getBoardCreatedByUser = async (email) => {
   return await Board.findOne({ email: email });
 };
 
-const getAllBoards = async () => {
-  return await Board.find();
+const getAllBoards = async (id) => {
+  const boards = await User.findOne({ _id: id }).populate("boards", [
+    "boards",
+    "title",
+  ]);
+  return boards.boards;
 };
 
 const createBoard = async (board) => {
@@ -14,7 +19,7 @@ const createBoard = async (board) => {
 };
 
 const getBoardById = async (id) => {
-  return await Board.findOne({ _id: id });
+  return await await Board.findOne({ _id: id });
 };
 
 const deleteBoardById = async (id) => {

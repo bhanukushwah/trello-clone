@@ -7,25 +7,24 @@ const {
   assignTask,
   removeAssignMember,
 } = require("../controllers");
-
-const authenticateRoute = require("../middlewares/authenticateRoute");
+const authenticateMember = require("../middlewares/authenticateMember");
 
 // create Task
-router.post("/", createTask);
+router.post("/", authenticateMember, createTask);
 
 // get single Task
-router.get("/:id", getTask);
+router.get("/:id",authenticateMember, getTask);
 
 // update  Task
-router.patch("/:boardId/:columnId/:taskId", updateTask);
+router.patch("/:boardId/:columnId/:taskId", authenticateMember, updateTask);
 
 // delete Task
-router.delete("/:boardId/:columnId/:taskId", deleteTask);
+router.delete("/:boardId/:columnId/:taskId", authenticateMember,deleteTask);
 
 // assign member
-router.patch("/assign/:boardId/", assignTask);
+router.patch("/assign/:boardId/", authenticateMember,assignTask);
 
 // remove member
-router.delete("/assign/:boardId/", removeAssignMember);
+router.delete("/assign/:boardId/", authenticateMember,removeAssignMember);
 
 module.exports = router;

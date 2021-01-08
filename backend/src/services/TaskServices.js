@@ -1,15 +1,17 @@
 const boardQuery = require("../db/board");
 
-const createTask = async ({ boardId, columnId, task }) => {
+const createTask = async ({ boardId, columnId, task, userId }) => {
   try {
     // get the board
     const board = await boardQuery.getBoardById(boardId);
-
     // get the index in columns array by columnId
-    const tasks = await board.columns.id(columnId).tasks;
+    const tasks = await board.columns[columnId].tasks;
+    await tasks.push({
+      author: userId,
+      title: task.title,
+      description: task.description,
+    });
 
-    console.log(tasks);
-    await tasks.push(task);
     const taskCreated = await board.save();
 
     return {
@@ -20,6 +22,7 @@ const createTask = async ({ boardId, columnId, task }) => {
     return {
       code: 400,
       message: "Error while adding task!",
+      error: e,
     };
   }
 };
@@ -85,7 +88,7 @@ const assignTask = async ({ boardId, columnId, taskId, members }) => {
     const board = await boardQuery.getBoardById(boardId);
 
     // get the index in columns array by columnId
-    const tasks = await board.columns.id(columnId).tasks;
+    const tasks = await board.columns[columnId].tasks;
 
     const taskIndex = tasks.findIndex((e) => e.id == taskId);
 
@@ -100,7 +103,7 @@ const assignTask = async ({ boardId, columnId, taskId, members }) => {
 
     return {
       code: 200,
-      data: "jdf",
+      data: "Success",
     };
   } catch (e) {
     return {

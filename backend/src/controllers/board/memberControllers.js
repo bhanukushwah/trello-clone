@@ -3,6 +3,7 @@ const {
   badRequestError,
   createdResponse,
   noContentResponse,
+  okResponse,
 } = require("../../global_function");
 
 const addMember = async (req, res, next) => {
@@ -16,6 +17,15 @@ const addMember = async (req, res, next) => {
   if (code == 400) return badRequestError(res, message);
 
   createdResponse(res, data, "members successfully added");
+};
+
+const searchMember = async (req, res, next) => {
+  const email = req.query.email;
+  const { code, data, message } = await MemberService.searchMembers(email);
+
+  if (code == 400) return badRequestError(res, message);
+
+  okResponse(res, data, "members fetched successfully");
 };
 
 const removeMember = async (req, res, next) => {
@@ -35,4 +45,5 @@ const removeMember = async (req, res, next) => {
 module.exports = {
   addMember,
   removeMember,
+  searchMember,
 };

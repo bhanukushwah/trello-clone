@@ -11,6 +11,8 @@ module.exports = function (req, res, next) {
     }
 
     req.user = { id: decoded.id, email: decoded.email };
+  } else {
+    return res.sendStatus(401);
   }
 
   next();

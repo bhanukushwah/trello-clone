@@ -32,7 +32,7 @@ const SignUp = async (user) => {
     { id: savedUser._id, email: savedUser.email, username: savedUser.username },
     process.env.TOKEN_SECRET,
     {
-      expiresIn: "3600s",
+      expiresIn: "1w",
     }
   );
 
@@ -66,7 +66,7 @@ const LogIn = async (user) => {
     },
     process.env.TOKEN_SECRET,
     {
-      expiresIn: "3600s",
+      expiresIn: "1w",
     }
   );
 

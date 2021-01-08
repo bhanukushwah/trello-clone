@@ -9,14 +9,18 @@ const boardValidation = require("../../services/validations/BoardValidation");
 const BoardService = require("../../services/BoardServices");
 
 const createBoard = async (req, res, next) => {
-  const board = req.body;
+  const { title } = req.body;
+  const { id } = req.user;
 
   // let validate the data before insert
-  const { error } = boardValidation(board);
+  const { error } = boardValidation({ title, owner: id });
   if (error) return badRequestError(res, error.details[0].message);
 
   // create board
-  const { code, message, data } = await BoardService.CreateBoard(board);
+  const { code, message, data } = await BoardService.CreateBoard({
+    title: title,
+    owner: id,
+  });
 
   if (code == 200) return okResponse(res, data, "Board successfully created!");
 
@@ -24,7 +28,8 @@ const createBoard = async (req, res, next) => {
 };
 
 const getAllBoards = async (req, res, next) => {
-  const { code, message, data } = await BoardService.getAllBoards();
+  const { id } = req.user;
+  const { code, message, data } = await BoardService.getAllBoards(id);
 
   if (code == 200) return okResponse(res, data, "All boards by this user!");
 

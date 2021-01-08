@@ -3,6 +3,7 @@ const { getUserById } = require("../db/user");
 const { to } = require("../global_function");
 
 const CreateBoard = async (board) => {
+  console.log(board);
   try {
     //create a board
     const newBoard = await boardQuery.createBoard(board);
@@ -15,27 +16,6 @@ const CreateBoard = async (board) => {
 
     // add user to board member
     newBoard.members.push(user.id);
-
-    // add predefined columns
-    newBoard.columns.push({
-      title: "To Do",
-      tasks: [],
-    });
-
-    newBoard.columns.push({
-      title: "In Development",
-      tasks: [],
-    });
-
-    newBoard.columns.push({
-      title: "To Be Reviewed",
-      tasks: [],
-    });
-
-    newBoard.columns.push({
-      title: "Finished",
-      tasks: [],
-    });
 
     const addedBoard = await newBoard.save();
 
@@ -51,20 +31,25 @@ const CreateBoard = async (board) => {
   }
 };
 
-const getAllBoards = async () => {
-  const [error, result] = await to(boardQuery.getAllBoards());
+const getAllBoards = async (userId) => {
+  try {
+    const boards = await boardQuery.getAllBoards(userId);
 
-  if (error) {
+    console.log(boards);
+
     return {
-      code: 400,
-      message: "Error while getting boards",
+      code: 200,
+      data: boards,
     };
+  } catch (e) {
+    if (e) {
+      return {
+        code: 400,
+        message: "Error while getting boards",
+      };
+    }
+    console.log(result);
   }
-
-  return {
-    code: 200,
-    data: result,
-  };
 };
 
 const getBoard = async (boardId) => {

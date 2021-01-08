@@ -6,21 +6,22 @@ const {
   updateBoard,
   deleteBoard,
 } = require("../controllers");
-const authenticateRoute = require("../middlewares/authenticateRoute");
+
+const authenticateMember = require("../middlewares/authenticateMember");
 
 // create board
-router.post("/", createBoard);
+router.post("/", authenticateMember, createBoard);
 
 // get all boards associated with user
-router.get("/", getAllBoards);
+router.get("/", authenticateMember, getAllBoards);
 
 // get single board
-router.get("/:boardId", getBoard);
+router.get("/:boardId", authenticateMember, getBoard);
 
 // update existing board
-router.patch("/:boardId", updateBoard);
+router.patch("/:boardId", authenticateMember, updateBoard);
 
 // delete existing board
-router.delete("/:boardId", deleteBoard);
+router.delete("/:boardId", authenticateMember, deleteBoard);
 
 module.exports = router;
